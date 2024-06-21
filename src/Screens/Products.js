@@ -4,10 +4,37 @@ import NewsLetter from "../Components/NewsLetter";
 import Navbar from "../Partials/Navbar";
 import { STORE_API } from "../Constants.js";
 import ProductCard from "../Components/ProductCard.js";
+import ProductsSkeleton from "../Components/ProductsSkeleton.js";
 
 const Products = ()=>{
 
     const [products,setProducts] = useState([]);
+    const [loading,setLoading] = useState(true);
+
+    let skeletons = [
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+        {
+            name:'1'
+        },
+    ]
+
 
     useEffect(()=>{
         let url = `${STORE_API}/products`;
@@ -16,6 +43,9 @@ const Products = ()=>{
             .then((response)=> response.json())
             .then((result)=> {
                 console.log(result);
+                setTimeout(()=>{
+                    setLoading(false);
+                },4000);
                 setProducts(result);
             })
             .catch((err)=>{
@@ -47,9 +77,14 @@ const Products = ()=>{
                     </section>
                     <section className="w-3/4 grid grid-rows-auto grid-cols-3 gap-10">
                         {
-                            products.map((item,index)=>(
-                                <ProductCard Product={item} key={index} />
-                            ))
+                            !loading && products.map((item,index)=>(
+                                            <ProductCard Product={item} key={index} />
+                                        ))
+                        }
+                        {
+                            loading && skeletons.map((item,index)=>(
+                                            <ProductsSkeleton key={index}/>
+                                        ))
                         }
                     </section>
                 </div>
