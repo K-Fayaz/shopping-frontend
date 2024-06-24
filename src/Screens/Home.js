@@ -5,6 +5,7 @@ import Brands from "../Components/Brands";
 import NewArrivals from "../Components/NewArrivals";
 import NewsLetter from "../Components/NewsLetter";
 import HomeFooter from "../Components/HomeFooter";
+import { useEffect } from "react";
 
 const Home = ()=>{
     return(

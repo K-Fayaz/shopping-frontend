@@ -1,26 +1,121 @@
 import Navbar from "../Partials/Navbar";
 import { useEffect, useState } from "react";
-import { STORE_API } from "../Constants";
+import { BASE_URL, STORE_API } from "../Constants";
 import { Rating } from "@mui/material";
-// import {CategoryIcon} from '@mui/icons-material/';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import NewsLetter from "../Components/NewsLetter";
 import HomeFooter from "../Components/HomeFooter";
 import SingleProductSkeleton from "../Components/SingleProductSkeleton";
+import { useNavigate } from "react-router-dom";
+
 
 const SingleProduct = ()=>{
 
     let [product,setProduct] = useState(null);
-    let [count,setCount] = useState(0);
+    let [count,setCount] = useState(1);
     const [loading,setloading] = useState(true);
+    const [added,setAdded] = useState(false);
 
-    const handleCountIncreasre = ()=>{
-        setCount((prev)=>(prev+1));
+    const navigate = useNavigate();
+
+    const handleAddtoCart = ()=>{
+        
+        if(!localStorage.getItem('token') || !localStorage.length) {
+            console.log("You need to login first!!");
+            navigate("/login");
+            return;
+        }
+
+        let payload = { quantity: count ,...product };
+        let options = {
+            method:"POST",
+            body: JSON.stringify(payload),
+            headers:{
+                'Content-Type':'application/json',
+                token: localStorage.getItem('token')
+            }
+        };
+
+        let url = `${BASE_URL}/product/add`;
+
+        fetch(url,options)
+            .then(response=>response.json())
+            .then(result =>{
+                console.log("Result is :",result);
+                if(result.status){
+                    setAdded(true);
+                }
+            })
+            .catch((err)=>{
+                console.log("Something went wrong: ",err);
+            })
+    } 
+
+    const handleCartRemove = ()=>{
+        let chunks = window.location.href.split("/");
+        let id = chunks[chunks.length-1];
+
+        if(!localStorage.getItem('token')|| !localStorage.length){
+            navigate('/login');
+            return;
+        }
+
+        let payload = {
+            productId: id
+        }
+
+        let url = `${BASE_URL}/product/remove?productId=${id}`;
+        let options = {
+            method:"POST",
+            body:JSON.stringify(payload),
+            headers:{
+                token: localStorage?.getItem('token')
+            }
+        };
+
+        fetch(url,options)
+            .then((response)=> response.json())
+            .then((result)=>{
+                if(result.status){
+                    setAdded(false);
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
-    const handleCountDecrease = ()=>{
-        setCount((prev)=>(prev-1));
-    }
+
+    useEffect(()=>{
+        
+        if(!localStorage.getItem('token') || !localStorage.length) {
+            navigate("/login");
+            return;    
+        }
+
+        let chunks = window.location.href.split("/");
+        let id = chunks[chunks.length-1];
+
+        let url = `${BASE_URL}/product/get?productId=${id}`;
+
+        let options = {
+            headers:{
+                token: localStorage?.getItem('token'),
+            }
+        };
+
+        fetch(url,options)
+            .then((response)=> response.json())
+            .then((result)=>{
+                console.log("Required product is :",result);
+                if(result.status){
+                    setAdded(result.content.data.exists);
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+    },[]);
     
     useEffect(()=>{
         
@@ -46,7 +141,7 @@ const SingleProduct = ()=>{
                 console.log("Something went wrong: ",err);
             })
 
-    },[]);    
+    },[]);
 
     return(
         <main className="w-full">
@@ -80,8 +175,8 @@ const SingleProduct = ()=>{
                                         <section className="flex justify-between items-center mt-5">
                                             <div className="flex basis-[100px] items-center justify-between">
                                                 <button 
-                                                    disabled={count === 0}
-                                                    className={`font-bold text-xl ${count == 0 ? 'text-[#666666]':''}`}
+                                                    disabled={count === 1}
+                                                    className={`font-bold text-xl ${count == 1 ? 'text-[#666666]':''}`}
                                                     onClick={()=>setCount((prev)=>(prev-1))}
                                                 >-</button>
                                                 <p>{count}</p>
@@ -90,9 +185,19 @@ const SingleProduct = ()=>{
                                                     onClick={()=>setCount((prev)=>(prev+1))}
                                                 >+</button>
                                             </div>
-                                            <button 
-                                                className="basis-[75%] py-2 border border-black hover:bg-black hover:text-white font-bold"
-                                            >Add to Cart</button>
+                                            {
+                                                !added && <button
+                                                    disabled={added}
+                                                    className='basis-[75%] py-2 border border border-black hover:text-white font-bold hover:bg-black' onClick={handleAddtoCart}>
+                                                        Add to Cart    
+                                                </button>
+                                            }
+                                            {
+                                                added && <button 
+                                                            className='basis-[75%] py-2 text-white font-bold bg-green-600'
+                                                            onClick={handleCartRemove}
+                                                        >Remove From Cart</button>
+                                            }
                                         </section>
                                     </section>
                                 </div>
