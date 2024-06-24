@@ -2,14 +2,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ()=>{
 
     const [token,setToken] = useState(localStorage?.getItem('token'));
+    const navigate = useNavigate();
     
     const handleLogout = ()=>{
         localStorage.removeItem('token');
         setToken(null);
+        navigate('/');
     }
 
     return(

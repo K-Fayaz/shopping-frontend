@@ -6,8 +6,10 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
 
     const [price,setPrice] = useState(Product.price * Product.quantity);
     const [count,setCount] = useState(Product.quantity);
+    const [clicked,setClicked] = useState(false);
 
     const handleRemoveCart = ()=>{
+        setClicked(true);
         console.log("Something triggered me")
         let url = `${BASE_URL}/product/remove?productId=${Product.productId}`;
         let options = {
@@ -23,11 +25,13 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
             .then((result)=>{
                 if(result.status){
                     setProducts((prev)=> prev.filter((item)=>  item.productId !== Product.productId));
-                    setTotal((prev)=> prev-(Product.price * Product.quantity))
+                    setTotal((prev)=> prev-(Product.price * Product.quantity));
+                    setClicked(false);
                 }
             })
             .catch((err)=>{
                 console.log("Something went wrong: ",err);
+                setClicked(false);
             })
 
     }
@@ -38,7 +42,11 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
                     <img className="w-[50%] h-[250px] object-contain" src={Product.image} alt="Cart Image"/>
                         <div className="ml-5">
                             <h1 className="text-sm font-semibold mt-5">{Product.title}</h1>
-                            <button onClick={handleRemoveCart} className="text-sm px-3 py-2 bg-black text-white mt-5 rounded">Remove From Cart</button>
+                            <button 
+                                onClick={handleRemoveCart} 
+                                className="text-sm px-3 py-2 bg-black text-white mt-5 rounded"
+                                disabled={clicked}
+                            >Remove From Cart</button>
                         </div>
                 </div>
                 <h1 className="basis-[20%] text-lg font-bold font-logo">${Product.price}</h1>
@@ -46,10 +54,10 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
                     <div className="border-2 rounded flex items-center w-[80px] justify-center">
                         <button disabled={count === Product.quantity} 
                             onClick={()=>{
-                                let c = count;
-                                setCount(c-1);
-                                c = c-1;
-                                setPrice(c * 14.90);
+                                let c = count-1;
+                                setCount(c);
+                                setPrice(c * Product.price);
+                                setTotal((prev)=> prev - Product.price);
                             }} 
                             className={`text-lg font-bold ${count === Product.quantity ? 'text-[#8A8A8A]':''}`}
                         >
@@ -60,7 +68,8 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
                                 onClick={()=>{
                                     let c = count+1;
                                     setCount(c);
-                                    setPrice(c*14.90);
+                                    setPrice(c * Product.price);
+                                    setTotal((prev)=> prev + Product.price);
                                 }}
                         >+</button>
                     </div>

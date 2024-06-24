@@ -13,6 +13,8 @@ const SingleProduct = ()=>{
 
     let [product,setProduct] = useState(null);
     let [count,setCount] = useState(1);
+    let [clicked,setClicked] = useState(false);
+    let [removeClicked,setRemoveClicked] = useState(false);
     const [loading,setloading] = useState(true);
     const [added,setAdded] = useState(false);
 
@@ -20,6 +22,7 @@ const SingleProduct = ()=>{
 
     const handleAddtoCart = ()=>{
         
+        setClicked(true);
         if(!localStorage.getItem('token') || !localStorage.length) {
             console.log("You need to login first!!");
             navigate("/login");
@@ -44,16 +47,20 @@ const SingleProduct = ()=>{
                 console.log("Result is :",result);
                 if(result.status){
                     setAdded(true);
+                    setClicked(false);
                 }
             })
             .catch((err)=>{
                 console.log("Something went wrong: ",err);
+                setClicked(false);
             })
     } 
 
     const handleCartRemove = ()=>{
         let chunks = window.location.href.split("/");
         let id = chunks[chunks.length-1];
+
+        setRemoveClicked(true);
 
         if(!localStorage.getItem('token')|| !localStorage.length){
             navigate('/login');
@@ -78,10 +85,12 @@ const SingleProduct = ()=>{
             .then((result)=>{
                 if(result.status){
                     setAdded(false);
+                    setRemoveClicked(false);
                 }
             })
             .catch((err)=>{
                 console.log(err);
+                setRemoveClicked(false);
             })
     }
 
@@ -187,13 +196,15 @@ const SingleProduct = ()=>{
                                             </div>
                                             {
                                                 !added && <button
-                                                    disabled={added}
-                                                    className='basis-[75%] py-2 border border border-black hover:text-white font-bold hover:bg-black' onClick={handleAddtoCart}>
+                                                    disabled={clicked || added }
+                                                    className='basis-[75%] py-2 border border border-black hover:text-white font-bold hover:bg-black' 
+                                                    onClick={handleAddtoCart}>
                                                         Add to Cart    
                                                 </button>
                                             }
                                             {
                                                 added && <button 
+                                                            disabled={removeClicked}
                                                             className='basis-[75%] py-2 text-white font-bold bg-green-600'
                                                             onClick={handleCartRemove}
                                                         >Remove From Cart</button>
