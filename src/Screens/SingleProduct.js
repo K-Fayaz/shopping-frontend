@@ -98,8 +98,8 @@ const SingleProduct = ()=>{
     useEffect(()=>{
         
         if(!localStorage.getItem('token') || !localStorage.length) {
-            navigate("/login");
-            return;    
+            setAdded(false);
+            return;
         }
 
         let chunks = window.location.href.split("/");
