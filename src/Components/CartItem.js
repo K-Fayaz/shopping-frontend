@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { BASE_URL } from "../Constants";
 
-const CartItem = ({ Product , setProducts , setTotal })=>{
+const CartItem = ({ Product , setProducts  })=>{
 
     const [price,setPrice] = useState(Product.price * Product.quantity);
     const [count,setCount] = useState(Product.quantity);
@@ -25,7 +25,7 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
             .then((result)=>{
                 if(result.status){
                     setProducts((prev)=> prev.filter((item)=>  item.productId !== Product.productId));
-                    setTotal((prev)=> prev-(Product.price * Product.quantity));
+                    // setTotal((prev)=> prev-(Product.price * Product.quantity));
                     setClicked(false);
                 }
             })
@@ -39,7 +39,7 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
     return(
         <div className="w-full flex justify-between mt-5 border-b-2 pb-5">
                 <div className="basis-[30%] flex">
-                    <img className="w-[50%] h-[250px] object-contain" src={Product.image} alt="Cart Image"/>
+                    <img className="w-[50%] h-[250px] object-contain" src={Product.image}/>
                         <div className="ml-5">
                             <h1 className="text-sm font-semibold mt-5">{Product.title}</h1>
                             <button 
@@ -57,7 +57,7 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
                                 let c = count-1;
                                 setCount(c);
                                 setPrice(c * Product.price);
-                                setTotal((prev)=> prev - Product.price);
+                                // setTotal((prev)=> prev - Product.price);
                             }} 
                             className={`text-lg font-bold ${count === Product.quantity ? 'text-[#8A8A8A]':''}`}
                         >
@@ -69,7 +69,7 @@ const CartItem = ({ Product , setProducts , setTotal })=>{
                                     let c = count+1;
                                     setCount(c);
                                     setPrice(c * Product.price);
-                                    setTotal((prev)=> prev + Product.price);
+                                    // setTotal((prev)=> prev + Product.price);
                                 }}
                         >+</button>
                     </div>

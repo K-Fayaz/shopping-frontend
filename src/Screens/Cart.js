@@ -12,7 +12,7 @@ const Cart = ()=>{
 
     const navigate = useNavigate();
     const [products,setProducts] = useState([]);
-    const [total,setTotal] = useState(0);
+    // const [total,setTotal] = useState(0);
     const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
@@ -40,7 +40,7 @@ const Cart = ()=>{
                     const totalPrice = result.content.data.reduce((accumulator ,item) => {
                         return accumulator += item.price * item.quantity;
                       }, 0);
-                    setTotal(Number(totalPrice));
+                    // setTotal(Number(totalPrice));
                     if(result.content.data.length > 0){
                         setTimeout(()=>{
                             setLoading(false);
@@ -78,7 +78,7 @@ const Cart = ()=>{
                         </div>
                     }
                     {
-                        products.length > 0 || loading && 
+                        (products.length > 0 || loading) && 
                         <div className="w-full flex justify-between my-10 border-b-2 pb-5">
                             <h1 className="basis-[30%] text-md font-bold">Product</h1>
                             <h1 className="text-md basis-[20%] font-bold">Price</h1>
@@ -88,7 +88,7 @@ const Cart = ()=>{
                     }
                     {
                         !loading && products.map((item,index)=>(
-                            <CartItem key={index} Product={item} setProducts={setProducts} setTotal={setTotal} />
+                            <CartItem key={index} Product={item} setProducts={setProducts} />
                         ))
                     }
                     {
