@@ -6,6 +6,8 @@ import NewArrivals from "../Components/NewArrivals";
 import NewsLetter from "../Components/NewsLetter";
 import HomeFooter from "../Components/HomeFooter";
 import { useEffect } from "react";
+import { CiHome } from "react-icons/ci";
+
 
 const Home = ()=>{
     return(
@@ -15,6 +17,7 @@ const Home = ()=>{
                 <Hero/>
                 <Brands/>
                 <NewArrivals/>
+                <h1 className="w-full bg-red-500 font-bold text-3xl">HI This is a Test application Is it updating itself ? when I edit the file? <CiHome/></h1>
             </div>
             <NewsLetter/>
             <HomeFooter/>
