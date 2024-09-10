@@ -4,7 +4,7 @@
   "context": "..",
   "appPort": [3000],
   "forwardPorts": [3000],
-  "extensions": [
+  "customizations/vscode/extensions": [
     "github.copilot",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
@@ -17,7 +17,7 @@
   "runArgs": [
     "--env", "NODE_ENV=development"
   ],
-  "settings": {
+  "customizations/vscode/settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
   },
   "remoteUser": "node"
