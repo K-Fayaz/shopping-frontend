@@ -21,8 +21,8 @@
     }
   },
   "postCreateCommand": "npm install",
-  "appPort": [3001],
-  "forwardPorts": [3001],
+  "appPort": [3000],
+  "forwardPorts": [3000],
   "runArgs": [
     "--env", "NODE_ENV=development"
   ],
