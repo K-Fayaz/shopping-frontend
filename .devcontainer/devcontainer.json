@@ -1,0 +1,19 @@
+{
+  "name": "shopping-frontend",
+  "dockerFile": "./Dockerfile",
+  "context": "..",
+  "appPort": [3000],
+  "forwardPorts": [3000],
+  "extensions": [
+    "github.copilot",
+    "dbaeumer.vscode-eslint"
+  ],
+  "postCreateCommand": "npm install",
+  "runArgs": [
+    "--env", "NODE_ENV=development"
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "remoteUser": "node"
+}
