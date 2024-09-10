@@ -6,7 +6,12 @@
   "forwardPorts": [3000],
   "extensions": [
     "github.copilot",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
+    "ms-python.python"
   ],
   "postCreateCommand": "npm install",
   "runArgs": [
