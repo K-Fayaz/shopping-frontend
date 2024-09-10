@@ -1,18 +1,15 @@
-# Base Docker image with Node.js and other tools
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:18
+# Use a base image that includes Node.js or add Node.js installation
+FROM codercom/code-server:latest
 
-# Set working directory
-WORKDIR /workspace
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
 
-# Copy package.json and install dependencies
-COPY package*.json ./
-RUN npm install
+# Optional: Install yarn if needed
+RUN npm install -g yarn
 
-# Copy the rest of the app code into the container
-COPY . .
+# Set the working directory
+WORKDIR /home/coder/app
 
-# Expose port 3000
+# Expose ports if needed
 EXPOSE 3000
-
-# Start the development server
-CMD ["npm", "start"]
