@@ -10,7 +10,14 @@
         "ms-azuretools.vscode-docker",
         "ms-vscode-remote.remote-containers",
         "ms-python.python"
-      ]
+      ],
+      "settings":{
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "remote.extensionKind": {
+          "ms-azuretools.vscode-docker": ["ui"],
+          "ms-vscode-remote.remote-ssh-edit": ["workspace"]
+        }
+      }
     }
   },
   "postCreateCommand": "npm install",
@@ -19,12 +26,5 @@
   "runArgs": [
     "--env", "NODE_ENV=development"
   ],
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash",
-    "remote.extensionKind": {
-      "ms-azuretools.vscode-docker": ["ui"],
-      "ms-vscode-remote.remote-ssh-edit": ["workspace"]
-    }
-  },
   "remoteUser": "node"
 }
